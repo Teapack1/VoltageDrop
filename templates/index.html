@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voltage Drop Calculator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <img src="/static/logo.png" alt="Company Logo" id="logo">
+        <h1>Voltage Drop Calculator</h1>
+    </header>
+    <main class="calculator-main">
+        <form id="calculator-form" class="calculator-form">
+            <div class="form-row">
+                <label for="cable_type">Cable Type:</label>
+                <select id="cable_type" name="cable_type" required>
+                    {% for cable in cables %}
+                    <option value="{{ cable.type }}">{{ cable.type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="voltage">Voltage:</label>
+                <input type="number" id="voltage" name="voltage" required>
+            </div>
+
+            <div class="form-row">
+                <label for="load">Load (A):</label>
+                <input type="number" id="load" name="load" required>
+            </div>
+
+            <div class="form-row">
+                <label for="length">Length (m):</label>
+                <input type="number" id="length" name="length" required>
+            </div>
+
+            <button type="submit" class="btn btn-calculate">Calculate</button>
+        </form>
+
+        <div id="result" class="result-display"></div>
+
+        <a href="/edit_cables" class="btn btn-back">Edit Cables</a>
+    </main>
+    <script src="/static/app.js"></script>
+</body>
+</html>
