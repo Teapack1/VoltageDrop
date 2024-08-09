@@ -3,7 +3,7 @@ title: VoltageDrop
 emoji: 🐢
 colorFrom: green
 colorTo: indigo
-sdk: static
+sdk: docker
 pinned: false
 license: apache-2.0
 ---
