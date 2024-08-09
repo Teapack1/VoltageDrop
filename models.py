@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Float, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+#DATABASE_URL = "sqlite:///:memory:?check_same_thread=False" # Use this for in-memory database
 DATABASE_URL = "sqlite:///./database.db"
 
 Base = declarative_base()

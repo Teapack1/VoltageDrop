@@ -1,11 +1,9 @@
+/* General Styles */
 body {
     font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: #f8f9fa;
     margin: 0;
     padding: 0;
-    background-color: #f8f9fa;
 }
 
 header {
@@ -18,68 +16,94 @@ header {
     padding: 20px 0;
 }
 
-.calculator-form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
 #logo {
     height: 50px;
     margin-right: 20px;
 }
 
-main {
+h1 {
+    margin: 0;
+}
+
+.calculator-main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
+    margin: 30px auto;
     width: 100%;
-    max-width: 600px;
+    max-width: 1200px;
     padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    box-sizing: border-box;
 }
 
-.add-cable-section,
-.existing-cables-section {
+#cable-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
     width: 100%;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;  /* Allow wrapping for better responsiveness */
 }
 
-.add-cable-section h2,
-.existing-cables-section h2 {
-    margin-bottom: 20px;
+.cable-group {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    position: relative;
+    flex: auto; /* Let the items grow and shrink based on space */
+    max-width: 800px; /* Optional maximum width */
+    min-width: 500px; /* Optional minimum width */
+}
+
+.cable-group h2 {
+    text-align: center;
+    margin-top: 0;
     color: #343a40;
 }
 
 .form-row {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
+    width: 100%;
 }
 
 .form-row label {
-    flex-basis: 30%;
+    flex: 0 0 40%;  /* Label takes up 40% of the row */
     font-weight: bold;
+    color: #343a40;
 }
 
-.form-row input {
-    flex-basis: 65%;
-    padding: 8px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-}
-
+.form-row input,
 .form-row select {
-    flex-basis: 65%;
+    flex: 1;  /* Input takes up the remaining space */
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Dropdown styling */
+.form-row select {
+    appearance: none;
+    background-color: #f8f9fa;
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.btn-group, .form-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensure buttons are aligned in one row */
 }
 
 .btn {
@@ -89,70 +113,27 @@ main {
     border: none;
     color: white;
     border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
-.btn-add {
-    background-color: #28a745;
-    width: 100%;
+.btn:hover {
+    opacity: 0.9;
 }
 
-.btn-save {
+.btn-add,
+.btn-add-cable {
     background-color: #007bff;
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
-.btn-delete {
-    background-color: #dc3545;
+.btn-add-cable:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
 
-.btn-group {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 10px;
-}
-
-.section-divider {
-    margin: 40px 0;
-    border: 0;
-    border-top: 2px solid #dee2e6;
-    width: 100%;
-}
-
-.cable-divider {
-    margin: 20px 0;
-    border: 0;
-    border-top: 1px solid #dee2e6;
-    width: 100%;
-}
-
-.btn-back {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    text-align: center;
-    text-decoration: none;
-    margin-top: 30px;
-    display: inline-block;
-    border-radius: 5px;
-    width: 100%;
-}
-
-.btn-back:hover {
-    background-color: #0056b3;
-}
 .btn-calculate {
     background-color: #6c757d; /* Disabled state */
-    color: white;
-    padding: 10px 20px;
-    font-size: 18px;
-    border: none;
     cursor: not-allowed;
-    border-radius: 4px;
-    margin-top: 20px;
-    width: 100%;
-    text-align: center;
-    transition: background-color 0.3s ease;
 }
 
 .btn-calculate.enabled {
@@ -160,17 +141,106 @@ main {
     cursor: pointer;
 }
 
-.btn-calculate:hover.enabled {
-    background-color: #218838;
+.btn-remove-cable {
+    background-color: #dc3545;
+    padding: 3px 8px;
+    font-size: 12px;
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .result-display {
-    margin-top: 30px;
-    font-size: 24px;
+    margin-top: 20px;
+    font-size: 20px;
     color: #28a745;
     text-align: center;
     padding: 20px;
     border-top: 2px solid #dee2e6;
-    width: 100%;
+    width: 50%;
+    background-color: white;
+    border-radius: 8px;
+    box-sizing: border-box;
 }
 
+.btn-back {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    font-size: 10px;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 16px;
+}
+
+.btn-back:hover {
+    background-color: #0056b3;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 992px) {
+    #cable-container .cable-group {
+        flex: 1 1 48%; /* Two cables per row on medium screens */
+    }
+
+    #cable-container .cable-group:nth-child(3) {
+        flex: 1 1 100%; /* Stack the third cable below on medium screens */
+    }
+}
+
+@media (max-width: 768px) {
+    #cable-container .cable-group {
+        flex: 1 1 100%; /* Full width for all cables on small screens */
+    }
+
+    .btn-add-cable,
+    .btn-calculate {
+        width: 100%;
+        margin-right: 0;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+.btn-save {
+    background-color: #007bff;
+}
+
+.btn-delete {
+    background-color: #dc3545;
+}
+
+/* Adjusted Specific Styles for the Edit Cables Page */
+.edit-cables-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 30px auto;
+    width: 100%;
+    max-width: 500px; /* Adjusted width to make it more compact */
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.add-cable-section, .existing-cables-section {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.add-cable-section h2, .existing-cables-section h2 {
+    margin-bottom: 20px;
+    color: #343a40;
+}

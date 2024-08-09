@@ -4,6 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
+from typing import List
 from models import Base, Cable, SessionLocal, init_db
 
 app = FastAPI()
@@ -22,6 +23,9 @@ class VoltageDropRequest(BaseModel):
     length: float
     cable_type: str
 
+class MultipleCablesRequest(BaseModel):
+    cables: List[VoltageDropRequest]
+
 def get_db():
     db = SessionLocal()
     try:
@@ -30,7 +34,9 @@ def get_db():
         db.close()
 
 def calculate_voltage_drop(voltage, load, length, resistance):
-    return voltage - (load * length * resistance)
+    voltage_drop = load * length * resistance
+    final_voltage = voltage - voltage_drop
+    return final_voltage
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request, db: Session = Depends(get_db)):
@@ -38,12 +44,15 @@ async def read_root(request: Request, db: Session = Depends(get_db)):
     return templates.TemplateResponse("index.html", {"request": request, "cables": cables})
 
 @app.post("/calculate")
-async def calculate(request: VoltageDropRequest, db: Session = Depends(get_db)):
-    cable = db.query(Cable).filter(Cable.type == request.cable_type).first()
-    if not cable:
-        raise HTTPException(status_code=400, detail="Invalid cable type")
-    result = calculate_voltage_drop(request.voltage, request.load, request.length, cable.resistance)
-    return {"voltage_drop": result}
+async def calculate(request: MultipleCablesRequest, db: Session = Depends(get_db)):
+    results = []
+    for cable_request in request.cables:
+        cable = db.query(Cable).filter(Cable.type == cable_request.cable_type).first()
+        if not cable:
+            raise HTTPException(status_code=400, detail="Invalid cable type")
+        voltage_drop = calculate_voltage_drop(cable_request.voltage, cable_request.load, cable_request.length, cable.resistance)
+        results.append({"voltage_drop": voltage_drop})
+    return results
 
 @app.get("/edit_cables", response_class=HTMLResponse)
 async def edit_cables(request: Request, db: Session = Depends(get_db)):
