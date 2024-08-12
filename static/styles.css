@@ -50,7 +50,6 @@ h1 {
     gap: 10px; /* Spacing between buttons */
 }
 
-
 .calculator-main {
     flex: 1;
     display: flex;
@@ -61,15 +60,16 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
+    width: 33%;
 }
 
 #cable-container {
     display: flex;
-    gap: 20px;
+    gap: 10px; /* Reduce gap between tiles */
     justify-content: center;
     width: 100%;
     margin-bottom: 20px;
-    flex-wrap: wrap;  /* Allow wrapping for better responsiveness */
+    flex-wrap: nowrap;  /* No wrapping */
 }
 
 .cable-group {
@@ -79,9 +79,9 @@ h1 {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     position: relative;
-    flex: auto; /* Let the items grow and shrink based on space */
-    max-width: 800px; /* Optional maximum width */
-    min-width: 500px; /* Optional minimum width */
+    flex: 1 1 40%; /* Each cable group takes up 30% of the container */
+    min-width: 280px; /* Optional minimum width */
+    max-width: 40%; /* Ensure the maximum width is constrained */
 }
 
 .cable-group h2 {
@@ -168,7 +168,6 @@ h1 {
     cursor: pointer;
 }
 
-
 .btn-cg-calculate {
     background-color: #6c757d; /* Disabled state */
     cursor: not-allowed;
@@ -209,26 +208,12 @@ h1 {
     background-color: #0056b3;
 }
 
-
 .action-buttons {
     display: flex;
     justify-content: center;
     gap: 10px;
     width: 100%;
     margin-bottom: 20px;
-}
-
-.result-display {
-    margin-top: 20px;
-    font-size: 20px;
-    color: #28a745;
-    text-align: center;
-    padding: 20px;
-    border-top: 2px solid #dee2e6;
-    width: 50%;
-    background-color: white;
-    border-radius: 8px;
-    box-sizing: border-box;
 }
 
 .btn-back {
@@ -320,4 +305,56 @@ h1 {
 .add-cable-section h2, .existing-cables-section h2 {
     margin-bottom: 20px;
     color: #343a40;
+}
+
+.result-display {
+    width: 100%; /* Fixed width to ensure consistency */
+    font-size: 20px;
+    color: #28a745;
+    text-align: center;
+    background-color: white;
+    min-height: 300px; /* Ensures the container has a minimum height */
+}
+
+
+/* CG */
+.result-visual-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.result-display-cg {
+
+    margin-top: 8px;
+    width: 100%; /* Fixed width to ensure consistency */
+    font-size: 20px;
+    color: #28a745;
+    text-align: right;
+    background-color: white;
+    min-height: 100%; /* Ensures the container has a minimum height */
+}
+
+.fixture-visual {
+    width: 100%; /* Fixed width to ensure consistency */
+    text-align: left;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fixture-visual img {
+    width: 75%;
+}
+
+.red-text {
+    color: red;
+}
+
+.orange-text {
+    color: orange;
 }

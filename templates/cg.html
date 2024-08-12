@@ -1,4 +1,3 @@
-<!-- cg.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,12 +13,23 @@
     <main class="calculator-main">
         <form id="cg-calculator-form">
             <div class="form-row">
-                <label for="voltage">Voltage (V):</label>
-                <input type="number" id="voltage" name="voltage">
+                <label for="led_type">LED Type:</label>
+                <select id="led_type" name="led_type">
+                    <option value="12,1">DMX (12V/1W)</option>
+                    <option value="24,2" selected>Static (24V/2W)</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="levels">Number of Levels:</label>
+                <input type="number" id="levels" name="levels" required>
+            </div>
+            <div class="form-row">
+                <label for="fixture_height">Fixture Height (m):</label>
+                <input type="number" id="fixture_height" name="fixture_height">
             </div>
             <div class="form-row">
                 <label for="cable_length">Input Cable Length (m):</label>
-                <input type="number" id="cable_length" name="cable_length">
+                <input type="number" id="cable_length" name="cable_length" value="3">
             </div>
             <div class="form-row">
                 <label for="awg">Cable AWG:</label>
@@ -30,20 +40,8 @@
                 </select>
             </div>
             <div class="form-row">
-                <label for="fixture_height">Fixture Height (m):</label>
-                <input type="number" id="fixture_height" name="fixture_height">
-            </div>
-            <div class="form-row">
-                <label for="levels">Number of Levels:</label>
-                <input type="number" id="levels" name="levels">
-            </div>
-            <div class="form-row">
                 <label for="leds_per_level">LEDs per Level:</label>
                 <input type="number" id="leds_per_level" name="leds_per_level" value="6">
-            </div>
-            <div class="form-row">
-                <label for="led_power">LED Power (W):</label>
-                <input type="number" id="led_power" name="led_power">
             </div>
 
             <div class="action-buttons">
@@ -51,7 +49,12 @@
             </div>
         </form>
 
-        <div id="result" class="result-display"></div>
+        <div class="result-visual-container">
+            <div id="result" class="result-display-cg"></div>
+            <div class="fixture-visual">
+                <img src="/static/cg.png" alt="Fixture Visual" id="fixture-image">
+            </div>
+        </div>
 
         <a href="/" class="btn btn-back">Back to Calculator</a>
     </main>

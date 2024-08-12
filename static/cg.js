@@ -27,16 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault();  // Prevent the default form submission
 
             const formData = new FormData(cgForm);
-            const voltage = parseFloat(formData.get('voltage')) || null;
-            const cableLength = parseFloat(formData.get('cable_length')) || null;
+            
+            // Get the selected LED type, which includes both voltage and power
+            const [voltage, ledPower] = formData.get('led_type').split(',').map(Number);
+            const cableLength = parseFloat(formData.get('cable_length')) || 3;
             const awg = formData.get('awg') || null;
             const fixtureHeight = parseFloat(formData.get('fixture_height')) || null;
             const levels = parseInt(formData.get('levels')) || null;
             const ledsPerLevel = parseInt(formData.get('leds_per_level')) || 6;
-            const ledPower = parseFloat(formData.get('led_power')) || null;
-
-            const totalLEDs = levels && ledsPerLevel ? levels * ledsPerLevel : null;
-            const levelHeight = fixtureHeight && levels ? fixtureHeight / levels : null;
 
             if (awg && voltage && cableLength) {
                 try {
@@ -45,18 +43,58 @@ document.addEventListener('DOMContentLoaded', function() {
                         const { resistance } = await response.json();
 
                         let resultsHtml = '';
-                        if (totalLEDs !== null && levelHeight !== null && ledPower !== null) {
+                        const totalLEDs = levels && ledsPerLevel ? levels * ledsPerLevel : null;
+                        const levelHeight = fixtureHeight && levels ? fixtureHeight / levels : null;
+
+                        if (totalLEDs !== null && levelHeight !== null) {
                             const totalPower = totalLEDs * ledPower;
                             const current = totalPower / voltage;
                             let remainingVoltage = voltage;
+                            const initialVoltage = voltage; // Store the initial voltage for percentage calculation
+                            let finalVoltage = voltage; // Track final voltage for drop percentage
 
-                            resultsHtml += `<p>Total LEDs: ${totalLEDs}</p>`;
+                            // Total LEDs
+                            resultsHtml += `<p>Total LEDs: ${totalLEDs} pcs</p>`;
+                            resultsHtml += `<p>&nbsp;</p>`;  // non-breaking space,
+
+                            // Calculate and display voltage for each level
                             for (let i = 1; i <= levels; i++) {
                                 const length = i * levelHeight + cableLength;
                                 const voltageDrop = calculateVoltageDrop(current, length, resistance);
                                 remainingVoltage -= voltageDrop;
-                                resultsHtml += `<p>Level ${i}: Final Voltage: ${remainingVoltage.toFixed(2)} V</p>`;
+
+                                // Ensure voltage doesn't go below 0
+                                if (remainingVoltage < 0) remainingVoltage = 0;
+
+                                // Determine the color based on the voltage drop percentage
+                                let colorClass = '';
+                                const currentDropPercentage = ((initialVoltage - remainingVoltage) / initialVoltage) * 100;
+                                if (currentDropPercentage > 10) {
+                                    colorClass = 'red-text';
+                                } else if (currentDropPercentage > 5) {
+                                    colorClass = 'orange-text';
+                                }
+
+                                resultsHtml += `<p class="${colorClass}">Level ${i} Voltage: ${remainingVoltage.toFixed(2)} V</p>`;
+                                finalVoltage = remainingVoltage; // Update final voltage after each level
                             }
+
+                            // Calculate the percentage drop from initial voltage to final voltage
+
+                            const voltageDropPercentage = ((initialVoltage - finalVoltage) / initialVoltage) * 100;
+                            
+                            // print the voltage drop percentage:
+                            //console.log(`Voltage Drop Percentage: ${voltageDropPercentage.toFixed(2)}%`);
+
+                            let colorClass = '';
+
+                            if (voltageDropPercentage > 10) {
+                                colorClass = 'red-text';
+                            } else if (voltageDropPercentage > 5) {
+                                colorClass = 'orange-text';
+                            }
+                            resultsHtml += `<p>&nbsp;</p>`;             
+                            resultsHtml += `<p class="${colorClass}">Voltage Drop: ${voltageDropPercentage.toFixed(2)}%</p>`;
                         } else {
                             resultsHtml = `<p>Partial data provided. Calculation incomplete.</p>`;
                         }
@@ -70,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('result').innerHTML = `<p>Error: An unexpected error occurred.</p>`;
                 }
             } else {
-                document.getElementById('result').innerHTML = `<p>Please provide at least Voltage, Cable Length, and AWG to perform calculations.</p>`;
+                document.getElementById('result').innerHTML = `<p>Please provide at least the Number of Levels.</p>`;
             }
         });
     }

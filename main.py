@@ -36,6 +36,8 @@ def get_db():
 def calculate_voltage_drop(voltage, load, length, resistance):
     voltage_drop = load * length * resistance
     final_voltage = voltage - voltage_drop
+    if final_voltage < 0:
+        final_voltage = 0
     return final_voltage
 
 @app.get("/", response_class=HTMLResponse)
@@ -50,8 +52,8 @@ async def calculate(request: MultipleCablesRequest, db: Session = Depends(get_db
         cable = db.query(Cable).filter(Cable.type == cable_request.cable_type).first()
         if not cable:
             raise HTTPException(status_code=400, detail="Invalid cable type")
-        voltage_drop = calculate_voltage_drop(cable_request.voltage, cable_request.load, cable_request.length, cable.resistance)
-        results.append({"voltage_drop": voltage_drop})
+        final_voltage = calculate_voltage_drop(cable_request.voltage, cable_request.load, cable_request.length, cable.resistance)
+        results.append({"voltage_drop": cable_request.voltage - final_voltage})
     return results
 
 @app.get("/edit_cables", response_class=HTMLResponse)

@@ -25,11 +25,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const cableGroups = document.querySelectorAll('.cable-group');
         cableGroups.forEach((group, index) => {
             group.querySelectorAll('input, select').forEach(input => {
-                // Update the id and name attributes to include the index
                 const baseName = input.name.split('[')[0]; // Get the base name without the index
                 input.name = `${baseName}[${index}]`;
                 input.id = `${baseName}-${index}`; // Update the id as well for accessibility
             });
+            group.querySelector('h2').textContent = `Cable ${index + 1}`; // Update the cable group title
         });
     }
 
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Append the new cable group to the container
             cableContainer.appendChild(newCableGroup);
             cableCount++;
-            updateCableGroupInputs();
+            updateCableGroupInputs(); // Update IDs and titles
             updateRemoveButtons();
             checkFormValidity();
         }
@@ -76,13 +76,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+
     // Remove a cable section
     cableContainer.addEventListener('click', function(event) {
         if (event.target.classList.contains('btn-remove-cable')) {
             if (cableCount > 1) {
                 event.target.closest('.cable-group').remove();
                 cableCount--;
-                updateCableGroupInputs();
+                updateCableGroupInputs(); // Update IDs and titles
                 addCableButton.disabled = false;
                 updateRemoveButtons();
                 checkFormValidity();
@@ -124,15 +125,30 @@ document.addEventListener('DOMContentLoaded', function() {
             // Display the results
             let resultsHtml = '';
             results.forEach((result, index) => {
-                resultsHtml += `<p>Cable ${index + 1}: Voltage Drop: ${result.voltage_drop.toFixed(2)} V</p>`;
+                let remainingVoltage = cablesData[index].voltage - result.voltage_drop;
+
+                // Ensure voltage doesn't go below 0
+                if (remainingVoltage < 0) remainingVoltage = 0;
+
+                // Calculate the percentage drop
+                const voltageDropPercentage = ((cablesData[index].voltage - remainingVoltage) / cablesData[index].voltage) * 100;
+
+                // Determine the color based on the percentage drop
+                let colorClass = '';
+                if (voltageDropPercentage > 10) {
+                    colorClass = 'red-text';
+                } else if (voltageDropPercentage > 5) {
+                    colorClass = 'orange-text';
+                }
+
+                resultsHtml += `<p class="${colorClass}">Cable ${index + 1} Voltage: ${remainingVoltage.toFixed(2)} V</p>`;
+                resultsHtml += `<p class="${colorClass}">Voltage Drop: ${voltageDropPercentage.toFixed(2)}%</p>`;
             });
             document.getElementById('result').innerHTML = resultsHtml;
         } else {
             console.error("Error:", response.statusText);
         }
     });
-
-
 
     // Helper function to calculate voltage drop
     function calculateVoltageDrop(voltage, current, length, resistance) {
