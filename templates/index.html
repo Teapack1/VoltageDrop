@@ -11,54 +11,66 @@
         <img src="/static/logo.png" alt="Company Logo" id="logo">
         <h1>Voltage Drop Calculator</h1>
     </header>
-    <main class="calculator-main">
-        <!-- Form wraps all cable groups -->
-        <form id="calculator-form">
-            <div id="cable-container">
-                <div class="cable-group">
-                    <h2>Cable 1</h2>
-                    <div class="form-row">
-                        <label for="cable_type-0">Cable Type:</label>
-                        <select id="cable_type-0" name="cable_type[0]" required>
-                            {% for cable in cables %}
-                            <option value="{{ cable.type }}">{{ cable.type }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
+    <div class="content-wrapper">
+        <nav class="nav-section">
+            <form action="/cg">
+                <button type="submit" class="btn btn-nav">Crystal Grid Calculator</button>
+            </form>
+            <form action="#">
+                <button type="submit" class="btn btn-nav">Crystal Pixel Calculator</button>
+            </form>
+        </nav>
 
-                    <div class="form-row">
-                        <label for="voltage-0">Voltage:</label>
-                        <input type="number" id="voltage-0" name="voltage[0]" required>
-                    </div>
+        <main class="calculator-main">
+            <!-- Form wraps all cable groups -->
+            <form id="calculator-form">
+                <div id="cable-container">
+                    <div class="cable-group">
+                        <h2>Cable 1</h2>
+                        <div class="form-row">
+                            <label for="cable_type-0">Cable Type:</label>
+                            <select id="cable_type-0" name="cable_type[0]" required>
+                                {% for cable in cables %} 
+                                <option value="{{ cable.type }}">{{ cable.type }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
 
-                    <div class="form-row">
-                        <label for="load-0">Load (A):</label>
-                        <input type="number" id="load-0" name="load[0]" required>
-                    </div>
+                        <div class="form-row">
+                            <label for="voltage-0">Voltage:</label>
+                            <input type="number" id="voltage-0" name="voltage[0]" required>
+                        </div>
 
-                    <div class="form-row">
-                        <label for="length-0">Length (m):</label>
-                        <input type="number" id="length-0" name="length[0]" required>
-                    </div>
+                        <div class="form-row">
+                            <label for="load-0">Load (A):</label>
+                            <input type="number" id="load-0" name="load[0]" required>
+                        </div>
 
-                    <!-- Remove Cable Button -->
-                    <button type="button" class="btn btn-remove-cable" style="display: none;">- Remove Cable</button>
+                        <div class="form-row">
+                            <label for="length-0">Length (m):</label>
+                            <input type="number" id="length-0" name="length[0]" required>
+                        </div>
+
+                        <!-- Remove Cable Button -->
+                        <button type="button" class="btn btn-remove-cable" style="display: none;">- Remove Cable</button>
+                        
+                    </div>
                 </div>
-            </div>
 
-            <!-- Action Buttons -->
-            <div class="action-buttons">
-                <button id="add-cable" type="button" class="btn btn-add-cable">+ Add Cable</button>
-                <button type="submit" class="btn btn-calculate">Calculate</button>
-            </div>
-        </form>
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button id="add-cable" type="button" class="btn btn-add-cable">+ Add Cable</button>
+                    <button type="submit" class="btn btn-calculate">Calculate</button>
+                </div>
+            </form>
 
-        <!-- Results Display -->
-        <div id="result" class="result-display"></div>
+            <!-- Results Display -->
+            <div id="result" class="result-display"></div>
 
-        <!-- Edit Cables Link -->
-        <a href="/edit_cables" class="btn btn-back">Edit Cables</a>
-    </main>
+            <!-- Edit Cables Link -->
+            <a href="/edit_cables" class="btn btn-back">Edit Cables</a>
+        </main>
+    </div>
     <script src="/static/app.js"></script>
 </body>
 </html>

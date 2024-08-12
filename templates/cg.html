@@ -1,0 +1,60 @@
+<!-- cg.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal Grid Calculator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Crystal Grid Calculator</h1>
+    </header>
+    <main class="calculator-main">
+        <form id="cg-calculator-form">
+            <div class="form-row">
+                <label for="voltage">Voltage (V):</label>
+                <input type="number" id="voltage" name="voltage">
+            </div>
+            <div class="form-row">
+                <label for="cable_length">Input Cable Length (m):</label>
+                <input type="number" id="cable_length" name="cable_length">
+            </div>
+            <div class="form-row">
+                <label for="awg">Cable AWG:</label>
+                <select id="awg" name="awg">
+                    {% for cable in cables %} 
+                    <option value="{{ cable.type }}">{{ cable.type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-row">
+                <label for="fixture_height">Fixture Height (m):</label>
+                <input type="number" id="fixture_height" name="fixture_height">
+            </div>
+            <div class="form-row">
+                <label for="levels">Number of Levels:</label>
+                <input type="number" id="levels" name="levels">
+            </div>
+            <div class="form-row">
+                <label for="leds_per_level">LEDs per Level:</label>
+                <input type="number" id="leds_per_level" name="leds_per_level" value="6">
+            </div>
+            <div class="form-row">
+                <label for="led_power">LED Power (W):</label>
+                <input type="number" id="led_power" name="led_power">
+            </div>
+
+            <div class="action-buttons">
+                <button type="submit" class="btn btn-cg-calculate">Calculate</button>
+            </div>
+        </form>
+
+        <div id="result" class="result-display"></div>
+
+        <a href="/" class="btn btn-back">Back to Calculator</a>
+    </main>
+    <script src="/static/cg.js"></script>
+</body>
+</html>

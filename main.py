@@ -84,3 +84,16 @@ async def delete_cable(cable_id: int, db: Session = Depends(get_db)):
     db.delete(cable)
     db.commit()
     return RedirectResponse(url="/edit_cables", status_code=303)
+
+
+@app.get("/cg", response_class=HTMLResponse)
+async def cg_page(request: Request, db: Session = Depends(get_db)):
+    cables = db.query(Cable).all()
+    return templates.TemplateResponse("cg.html", {"request": request, "cables": cables})
+
+@app.get("/get_resistance/{awg}", response_model=dict)
+async def get_resistance(awg: str, db: Session = Depends(get_db)):
+    cable = db.query(Cable).filter(Cable.type == awg).first()
+    if not cable:
+        raise HTTPException(status_code=404, detail="Cable type not found")
+    return {"resistance": cable.resistance}

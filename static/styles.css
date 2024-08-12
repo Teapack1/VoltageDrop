@@ -4,6 +4,9 @@ body {
     background-color: #f8f9fa;
     margin: 0;
     padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 header {
@@ -25,14 +28,38 @@ h1 {
     margin: 0;
 }
 
+.content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 30px;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+.nav-section {
+    flex: 0 0 200px; /* Fixed width for the navigation */
+    margin-right: 20px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Spacing between buttons */
+}
+
+
 .calculator-main {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 30px auto;
-    width: 100%;
-    max-width: 1200px;
+    background-color: white;
     padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
 }
 
@@ -141,6 +168,17 @@ h1 {
     cursor: pointer;
 }
 
+
+.btn-cg-calculate {
+    background-color: #6c757d; /* Disabled state */
+    cursor: not-allowed;
+}
+
+.btn-cg-calculate.enabled {
+    background-color: #28a745; /* Enabled state */
+    cursor: pointer;
+}
+
 .btn-remove-cable {
     background-color: #dc3545;
     padding: 3px 8px;
@@ -149,6 +187,28 @@ h1 {
     bottom: 10px;
     right: 10px;
 }
+
+.btn-nav {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    font-size: 14px;
+    text-align: center;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none; /* Remove default button border */
+    display: block;
+    width: 100%; /* Full width within the nav section */
+    text-align: center;
+    width: 150px;
+    margin-top: 20px;
+}
+
+.btn-nav:hover {
+    background-color: #0056b3;
+}
+
 
 .action-buttons {
     display: flex;
@@ -175,10 +235,17 @@ h1 {
     background-color: #007bff;
     color: white;
     padding: 8px 16px;
-    font-size: 10px;
+    font-size: 14px;
     text-align: center;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    border: none;
+    display: block;
     text-decoration: none;
-    margin-top: 16px;
+    text-align: center;
+    width: 150px;
+    margin-top: 20px;
 }
 
 .btn-back:hover {
@@ -197,6 +264,16 @@ h1 {
 }
 
 @media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-section {
+        flex: 0 0 100%;
+        margin-bottom: 20px;
+    }
+
     #cable-container .cable-group {
         flex: 1 1 100%; /* Full width for all cables on small screens */
     }

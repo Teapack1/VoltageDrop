@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Voltage Drop Calculator Elements
     const form = document.getElementById('calculator-form');
     const cableContainer = document.getElementById('cable-container');
     const addCableButton = document.getElementById('add-cable');
     const calculateButton = document.querySelector('.btn-calculate');
+
     let cableCount = 1;
     const maxCables = 3;
 
@@ -88,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle form submission
+    // Handle form submission for voltage drop calculator
     form.addEventListener('submit', async function(event) {
         event.preventDefault();
 
@@ -129,6 +131,13 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error:", response.statusText);
         }
     });
+
+
+
+    // Helper function to calculate voltage drop
+    function calculateVoltageDrop(voltage, current, length, resistance) {
+        return current * length * resistance;
+    }
 
     // Initially check the form validity and update buttons on page load
     form.addEventListener('input', checkFormValidity);
