@@ -34,7 +34,9 @@ def get_db():
         db.close()
 
 def calculate_voltage_drop(voltage, load, length, resistance):
-    voltage_drop = load * length * resistance
+
+    resistance_in_ohms = resistance / 1000  # Convert mΩ/m to Ω/m
+    voltage_drop = load * 2*length * resistance_in_ohms
     final_voltage = voltage - voltage_drop
     if final_voltage < 0:
         final_voltage = 0
