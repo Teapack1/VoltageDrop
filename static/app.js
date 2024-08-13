@@ -150,11 +150,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Helper function to calculate voltage drop
-    function calculateVoltageDrop(voltage, current, length, resistance) {
-        return current * length * resistance;
-    }
-
     // Initially check the form validity and update buttons on page load
     form.addEventListener('input', checkFormValidity);
     checkFormValidity();

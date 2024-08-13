@@ -106,7 +106,7 @@ h1 {
 
 .form-row input,
 .form-row select {
-    flex: 1;  /* Input takes up the remaining space */
+    flex: 1; 
     padding: 8px;
     font-size: 16px;
     border: 1px solid #ccc;
